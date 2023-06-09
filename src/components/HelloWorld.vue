@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-
+import VueDatePicker from '@vuepic/vue-datepicker';
 defineProps<{ msg: string }>()
 
 const count = ref(0)
@@ -29,6 +29,8 @@ const count = ref(0)
     in your IDE for a better DX
   </p>
   <p class="read-the-docs">Click on the Vite and Vue logos to learn more</p>
+  <b-button variant="success">Button</b-button>
+  <VueDatePicker />
 </template>
 
 <style scoped>
