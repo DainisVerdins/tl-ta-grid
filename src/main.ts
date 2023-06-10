@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
-// Global css styles
-import './style.css';
+// Global scss styles
+import './style.scss';
 
 // TODO add suport of scss and change default variable colors to proper ones
 

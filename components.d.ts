@@ -8,6 +8,8 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     BButton: typeof import('bootstrap-vue-next')['BButton']
+    DatePickerBar: typeof import('./src/components/datepicker-bar/DatePickerBar.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
+    TimePickerBar: typeof import('./src/components/timepicker-bar/TimePickerBar.vue')['default']
   }
 }
