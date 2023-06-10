@@ -1,7 +1,7 @@
 export interface AssignedVehicle {
-    id: string;
+    id: number;
     assignedLineNumber: number;
     vehicleNumber: string;
     assignedToLineDate: string;
-    technicalInspectionCopleteDate: string;
+    technicalInspectionCopleteDate?: string | null;
 }

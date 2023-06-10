@@ -1,11 +1,3 @@
-<script setup lang="ts">
-import { ref } from 'vue'
-import VueDatePicker from '@vuepic/vue-datepicker';
-defineProps<{ msg: string }>()
-
-const count = ref(0)
-</script>
-
 <template>
   <h1>{{ msg }}</h1>
 
@@ -29,9 +21,35 @@ const count = ref(0)
     in your IDE for a better DX
   </p>
   <p class="read-the-docs">Click on the Vite and Vue logos to learn more</p>
-  <b-button variant="success">Button</b-button>
+  <b-button variant="success" @click="callService">Button</b-button>
   <VueDatePicker />
 </template>
+
+<script lang="ts">
+import vehicleService from '@src/services/vehicle-service';
+import VueDatePicker from '@vuepic/vue-datepicker';
+import { defineComponent } from 'vue'
+
+export default defineComponent({
+  // type inference enabled
+  props: {
+    msg: String
+  },
+
+  data() {
+    return {
+      count: 1
+    }
+  },
+
+  methods: {
+    async callService(): Promise<void>{
+      const result = await vehicleService.getVehicles();
+      console.log(result);
+    }
+  },
+})
+</script>
 
 <style scoped>
 .read-the-docs {
