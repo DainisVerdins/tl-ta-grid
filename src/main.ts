@@ -1,4 +1,5 @@
 import { createApp } from 'vue';
+import BootstrapVueNext from 'bootstrap-vue-next';
 // Global scss styles
 import './style.scss';
 
@@ -13,4 +14,6 @@ import '@vuepic/vue-datepicker/dist/main.css';
 
 import App from './App.vue';
 
-createApp(App).mount('#app');
+const app = createApp(App);
+app.use(BootstrapVueNext);
+app.mount('#app');

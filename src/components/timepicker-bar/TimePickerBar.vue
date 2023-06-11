@@ -1,17 +1,113 @@
 <template>
-    <div>
-        <p>Some datapicker info</p>
+  <div class="time-picker-bar-container">
+    <div class="row">
+      <div class="col">
+        <VueDatePicker
+          v-model="date"
+          :locale=locale
+          cancelText="Atcelt"
+          selectText="Izvēlēties"
+          :enable-time-picker="false"
+          auto-apply
+          placeholder="Izvēlies datumu"
+          required
+          :format=dateFormat
+          :state="isValidDate"
+        />
+      </div>
+      <div class="col">
+        <VueDatePicker
+          v-model="time"
+          :locale=locale
+          cancelText="Atcelt"
+          selectText="Izvēlēties"
+          :input-format=timeFormat
+          time-picker
+          enable-seconds
+          placeholder="Izvēlies laiku"
+          :required="true"
+          :state="isValidTime"
+        />
+      </div>
+      <div class="col">
+        <b-button
+          @click="filter"
+          variant="primary" 
+        >
+          Filtrēt
+        </b-button>
+      </div>
     </div>
-  </template>
+  </div>
+</template>
   
 <script lang="ts">
-  // import VueDatePicker from '@vuepic/vue-datepicker';
+import VueDatePicker from '@vuepic/vue-datepicker';
 import { defineComponent } from 'vue'
-  
+import { constants } from '@src/constants/constants';
+
 export default defineComponent({
+  components: { VueDatePicker },
+  emits: ['date'],
+
+  data() {
+    return {
+      date: null,
+      time: null,
+      isValidDate: undefined as undefined | boolean,
+      isValidTime: undefined as undefined | boolean,
+    };
+  },
+
+  computed: {
+    locale(): string {
+      return constants.LOCALE;
+    },
+    timeFormat(): string {
+      return constants.TIME_FORMAT;
+    },
+    dateFormat(): string {
+      return constants.DATE_FORMAT;
+    }
+  },
+  methods: {
+    filter(): void {
+      if(!this.date) {
+        this.isValidDate = false;
+        return;
+      }
+      if(!this.time) {
+        this.isValidTime = false;
+        return;
+      }
+
+      this.isValidTime = undefined;
+      this.isValidDate = undefined;
+
+      const newTime = new Date(this.date);
+      newTime.setHours(this.time['hours'], this.time['minutes'], this.time['seconds']);
+
+      this.$emit('date', newTime);
+    }
+  },
+  watch: {
+    time(newTime) {
+      if(newTime)
+        this.isValidTime = true;
+    },
+    date(newDate) {
+      if(newDate)
+        this.isValidDate = true;
+    }
+  }
 })
 </script>
   
-<style scoped>
+<style scoped lang="scss">
+.time-picker-bar-container {
+  margin: 20px;
+  padding: 10px;
+  border: 1px solid green;
+}
 </style>
   
