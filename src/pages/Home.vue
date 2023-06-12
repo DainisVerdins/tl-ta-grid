@@ -9,6 +9,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import TimePickerBar from '@src/components/timepicker-bar/TimePickerBar.vue';
+import vehicleService from '@src/services/vehicle-service';
+import { VehicleDictionaryLine } from '@src/interfaces/vehicle-line-dict';
 
 export default defineComponent({
   components: { TimePickerBar },
@@ -16,7 +18,12 @@ export default defineComponent({
   data() {
     return {
       filteringDate: new Date(),
+      defaultVehicleLinesDict: {} as VehicleDictionaryLine,
     }
+  },
+
+  async mounted(): Promise<void> {
+    this.defaultVehicleLinesDict = await vehicleService.getVehiclesByLines();
   },
 
   methods: {
