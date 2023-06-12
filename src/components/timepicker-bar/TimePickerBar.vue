@@ -1,15 +1,15 @@
 <template>
-  <div class="time-picker-bar-container">
+  <div class="time-picker-bar">
     <div class="row">
       <div class="col">
         <VueDatePicker
           v-model="date"
           :locale=locale
-          cancelText="Atcelt"
-          selectText="Izvēlēties"
+          :cancelText="cancelText"
+          :selectText="selectText"
           :enable-time-picker="false"
           auto-apply
-          placeholder="Izvēlies datumu"
+          :placeholder="placeholderText('datumu')"
           required
           :format=dateFormat
           :state="isValidDate"
@@ -19,13 +19,13 @@
         <VueDatePicker
           v-model="time"
           :locale=locale
-          cancelText="Atcelt"
-          selectText="Izvēlēties"
+          :cancelText="cancelText"
+          :selectText="selectText"
           :input-format=timeFormat
           time-picker
           enable-seconds
-          placeholder="Izvēlies laiku"
-          :required="true"
+          :placeholder="placeholderText('laiku')"
+          required
           :state="isValidTime"
         />
       </div>
@@ -68,9 +68,21 @@ export default defineComponent({
     },
     dateFormat(): string {
       return constants.DATE_FORMAT;
-    }
+    },
+
+    cancelText(): string {
+      return 'Atcelt';
+    },
+    
+    selectText(): string {
+      return 'Izvēlēties';
+    },
   },
   methods: {
+    placeholderText(choseWhat: string): string {
+      return `Izvēlies ${choseWhat}`;
+    },
+
     filter(): void {
       if(!this.date) {
         this.isValidDate = false;
@@ -104,7 +116,7 @@ export default defineComponent({
 </script>
   
 <style scoped lang="scss">
-.time-picker-bar-container {
+.time-picker-bar {
   margin: 20px;
   padding: 10px;
   border: 1px solid green;
