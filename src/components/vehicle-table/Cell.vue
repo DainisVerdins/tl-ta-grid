@@ -1,49 +1,71 @@
 <template>
-    <div
-        class="car-cell container"
-        @click="remove"
-    >
-        <div class="position-absolute top-50 start-50 translate-middle">
-            <p>{{ vehicle.vehicleNumber }}</p>
+    <template v-if="isClickable">
+        <div
+            class="cell container is-clickable"
+            @click="remove"
+        >
+            {{ label }}
         </div>
-    </div>
+    </template>
+    <template v-else-if="isEmptyCell" >
+        <div class="cell container"></div>
+    </template>
+    <template v-else>
+        <div class="cell container" >
+            {{ label }}
+        </div>
+    </template>
 </template>
     
 <script lang="ts">
-import { PropType, defineComponent } from 'vue'
-import { AssignedVehicle } from '@src/interfaces/assigned-vehicle';
+import { defineComponent } from 'vue'
   
 export default defineComponent({
-    emits: ['vehicle'],
+    emits: ['remove'],
     props: {
-        vehicle:{
-            required: true,
-            type: Object as PropType<AssignedVehicle>,
+        id:{
+            required: false,
+            type: Number,
         },
+        label:{
+            required: false,
+            type: String,
+        },
+        isClickable: {
+            default: false,
+            type: Boolean
+        },
+        isEmptyCell: {
+            default: false,
+            type: Boolean
+        }
     },
     methods: {
         remove(): void {
-            this.$emit('vehicle', this.vehicle);
+            this.$emit('remove', this.id);
+        },
+
+        setDisabled(): void {
+            console.log('YOU DISABLED ME!');
         }
     },
 })
-  </script>
+</script>
     
-  <style scoped lang="scss">
-  .car-cell {
-    width: 100px;
-    height: 50px;
+<style scoped lang="scss">
+.cell {
+    width: 100px; // TODO: change from px into rem
+    height: 25px;
+    padding: 0 10px 0 10px;
     border: 1px solid green;
     position: relative;
-    p {
-        margin-top: 0;
-        margin-bottom: 0;
-    }
+}
 
+.is-clickable {
     &:hover {
         background-color: yellow;
         cursor: pointer;
     }
-  }
+}
   </style>
     

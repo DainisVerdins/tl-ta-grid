@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div v-if="isLoaded">
     <TimePickerBar @date="filterRecords"/>
-      <!-- For vertical Grid component-->
+      <VehicleLine  lineNumber="1" :vehicles="tmp"/>
       <p>{{ filteringDate }}</p>
   </div>
 </template>
@@ -11,15 +11,21 @@ import { defineComponent } from 'vue';
 import TimePickerBar from '@src/components/timepicker-bar/TimePickerBar.vue';
 import vehicleService from '@src/services/vehicle-service';
 import { VehicleDictionaryLine } from '@src/interfaces/vehicle-line-dict';
+import VehicleLine from '@src/components/vehicle-table/VehicleLine.vue';
+import { AssignedVehicle } from '@src/interfaces/assigned-vehicle';
 
 export default defineComponent({
-  components: { TimePickerBar },
+  components: { TimePickerBar, VehicleLine },
   
   data() {
     return {
       filteringDate: new Date(),
       defaultVehicleLinesDict: {} as VehicleDictionaryLine,
       mutableVehicleLinesDict: {} as VehicleDictionaryLine,
+
+      tmp: [] as AssignedVehicle[],
+      line: 1,
+      isLoaded: false
     }
   },
 
@@ -28,6 +34,11 @@ export default defineComponent({
 
     this.defaultVehicleLinesDict = vehicleLineDict;
     this.mutableVehicleLinesDict = vehicleLineDict;
+
+    //console.log(vehicleLineDict[1]);
+    this.line=1;
+    this.tmp = vehicleLineDict[1].slice(0, 14);
+    this.isLoaded = true;
   },
 
   methods: {
