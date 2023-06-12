@@ -19,16 +19,29 @@ export default defineComponent({
     return {
       filteringDate: new Date(),
       defaultVehicleLinesDict: {} as VehicleDictionaryLine,
+      mutableVehicleLinesDict: {} as VehicleDictionaryLine,
     }
   },
 
   async mounted(): Promise<void> {
-    this.defaultVehicleLinesDict = await vehicleService.getVehiclesByLines();
+    const vehicleLineDict = await vehicleService.getVehiclesByLines();
+
+    this.defaultVehicleLinesDict = vehicleLineDict;
+    this.mutableVehicleLinesDict = vehicleLineDict;
   },
 
   methods: {
     filterRecords(date: Date): void {
       this.filteringDate = date;
+      const filteringDateString = this.filteringDate.toDateString();
+
+      // Assumed according task what
+      // assignedToLineDate < filteringDate < technicalInspectionCopleteDate
+      for (const [key] of Object.entries(this.defaultVehicleLinesDict)) {
+        this.mutableVehicleLinesDict[Number(key)] = this.defaultVehicleLinesDict[Number(key)].filter((vehicle) => { 
+          return (vehicle.assignedToLineDate < filteringDateString) && (vehicle.technicalInspectionCopleteDate ? (filteringDateString < vehicle.technicalInspectionCopleteDate) : true );
+        })
+      }
     }
   }
 })
