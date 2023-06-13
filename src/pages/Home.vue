@@ -8,7 +8,6 @@
 import { defineComponent } from 'vue';
 import TimePickerBar from '@src/components/timepicker-bar/TimePickerBar.vue';
 import vehicleService from '@src/services/vehicle-service';
-import { AssignedVehicle } from '@src/interfaces/assigned-vehicle';
 import { VehicleLine } from '@src/interfaces/vehicle-line';
 
 export default defineComponent({
@@ -16,12 +15,9 @@ export default defineComponent({
   
   data() {
     return {
-      filteringDate: new Date(),
+      filteringDate: '',
       defaultVehicleLines: [] as VehicleLine[],
       filteredVehicleLines: [] as VehicleLine[],
-
-      tmp: [] as AssignedVehicle[],
-      line: 1,
       isLoaded: false
     }
   },
@@ -35,12 +31,10 @@ export default defineComponent({
   },
 
   methods: {
-    filterRecords(date: Date): void {
+    filterRecords(date: string): void {
       this.filteringDate = date;
-      const filteringDateString = this.filteringDate.toString();
-      debugger;
-      this.filteredVehicleLines.length = 0;
 
+      this.filteredVehicleLines.length = 0;
       // Assumed according task what
       // assignedToLineDate < filteringDate < technicalInspectionCopleteDate
       for (const vehicleLine of this.defaultVehicleLines) {
@@ -48,7 +42,7 @@ export default defineComponent({
         this.filteredVehicleLines.push({
           lineNumber: vehicleLine.lineNumber,
           vehicles: vehicleLine.vehicles.filter((vehicle) => {
-            return (vehicle.assignedToLineDate < filteringDateString) && (vehicle.technicalInspectionCopleteDate ? (filteringDateString < vehicle.technicalInspectionCopleteDate) : true );
+            return (vehicle.assignedToLineDate < this.filteringDate) && (vehicle.technicalInspectionCopleteDate ? (this.filteringDate < vehicle.technicalInspectionCopleteDate) : true );
           })
         } as VehicleLine)
       }

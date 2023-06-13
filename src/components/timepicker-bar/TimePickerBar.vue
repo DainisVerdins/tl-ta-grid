@@ -99,7 +99,7 @@ export default defineComponent({
       const newTime = new Date(this.date);
       newTime.setHours(this.time['hours'], this.time['minutes'], this.time['seconds']);
 
-      this.$emit('date', newTime);
+      this.$emit('date', newTime.toString());
     }
   },
   watch: {
