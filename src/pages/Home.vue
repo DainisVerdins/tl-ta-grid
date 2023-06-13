@@ -1,17 +1,24 @@
 <template>
   <div v-if="isLoaded">
     <TimePickerBar @date="filterRecords"/>
+    <VehicleTable
+      :vehicle-lines="defaultVehicleLines"
+      :filter-date="filteringDate"
+      />
   </div>
 </template>
   
 <script lang="ts">
 import { defineComponent } from 'vue';
 import TimePickerBar from '@src/components/timepicker-bar/TimePickerBar.vue';
+import VehicleTable from '@src/components/vehicle-table/VehicleTable.vue';
+
 import vehicleService from '@src/services/vehicle-service';
+
 import { VehicleLine } from '@src/interfaces/vehicle-line';
 
 export default defineComponent({
-  components: { TimePickerBar },
+  components: { TimePickerBar, VehicleTable },
   
   data() {
     return {
@@ -26,7 +33,7 @@ export default defineComponent({
     const vehicleLines = await vehicleService.getVehiclesByLines();
     this.defaultVehicleLines = vehicleLines;
     this.filteredVehicleLines = Object.assign(this.filteredVehicleLines, vehicleLines);
-
+    this.filteringDate = new Date().toString();
     this.isLoaded = true;
   },
 

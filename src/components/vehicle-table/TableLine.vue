@@ -1,15 +1,15 @@
 <template>
-    <div class="flex-row vehicle-line">
+    <div class="flex-row table-line">
         <Cell :label="lineNumber"/>
-     <template v-for="vehicle in lineVehicles">
-        <Cell
-            :ref="`cell${vehicle.id}`"
-            :label="vehicle.vehicleNumber"
-            :id="vehicle.id"
-            @remove="removeVehicle"
-            is-clickable
-        />
-     </template>
+        <template v-for="vehicle in lineVehicles">
+            <Cell
+                :ref="`cell${vehicle.id}`"
+                :label="vehicle.vehicleNumber"
+                :id="vehicle.id"
+                @remove="removeVehicle"
+                is-clickable
+            />
+        </template>
     </div>
 </template>
     
@@ -27,7 +27,6 @@ export default defineComponent({
     },
     mounted() {
         this.lineVehicles = this.vehicles;
-        console.log(this.lineVehicles);
     },
     props: {
         lineNumber:{
@@ -49,7 +48,7 @@ export default defineComponent({
 </script>
     
 <style scoped lang="scss">
-.vehicle-line {
+.table-line {
     display: flex;
 }
 </style>
