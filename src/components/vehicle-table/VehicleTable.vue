@@ -34,7 +34,7 @@ export default defineComponent({
   .vehicle-table {
     margin: 20px;
     padding: 10px;
-    border: 1px solid green;
+    border: 1px solid red;
   }
   </style>
     

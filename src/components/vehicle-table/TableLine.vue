@@ -1,13 +1,13 @@
 <template>
-    <div class="flex-row table-line">
+    <div class="container">
         <Cell :label="lineNumber"/>
-        <template v-for="vehicle in lineVehicles">
+        <template v-for="vehicle in lineVehicles.slice(0, 14)">
             <Cell
                 :ref="`cell${vehicle.id}`"
                 :label="vehicle.vehicleNumber"
                 :id="vehicle.id"
                 @remove="removeVehicle"
-                is-clickable
+                can-click
             />
         </template>
     </div>
@@ -40,16 +40,13 @@ export default defineComponent({
     },
     methods: {
         removeVehicle(vehicleId: Number): void {
-            console.log(vehicleId);
-            // this.$refs[`cell${vehicleId}`][0].setDisabled(); // Get make cell from ref to bee read only
+            //console.log(vehicleId);
+            this.$refs[`cell${vehicleId}`][0].setCellToBeEmpty(); // Get make cell from ref to bee read only
         }
     },
 })
 </script>
     
 <style scoped lang="scss">
-.table-line {
-    display: flex;
-}
 </style>
     

@@ -1,19 +1,32 @@
 <template>
     <template v-if="isClickable">
-        <div
-            class="cell container is-clickable"
-            @click="remove"
+        <b-button
+          @click="remove"
+          variant="dark" 
+          squared
+          class="cell is-clickable"
         >
             {{ label }}
-        </div>
+        </b-button>
     </template>
     <template v-else-if="isEmptyCell" >
-        <div class="cell container"></div>
+        <b-button
+          variant="dark" 
+          squared
+          disabled
+          class="cell" 
+        >
+        </b-button>
     </template>
     <template v-else>
-        <div class="cell container" >
-            {{ label }}
-        </div>
+        <b-button
+          variant="dark" 
+          squared
+          disabled
+          class="cell" 
+        >
+        {{ label }}
+        </b-button>
     </template>
 </template>
     
@@ -31,13 +44,27 @@ export default defineComponent({
             required: false,
             type: String,
         },
-        isClickable: {
+        canClick: {
             default: false,
             type: Boolean
         },
-        isEmptyCell: {
+        emptyCell: {
             default: false,
             type: Boolean
+        }
+    },
+    data() {
+        return {
+            isEmpty: false,
+        }
+    },
+    computed: {
+        isClickable(): boolean {
+            return this.canClick && (!this.isEmptyCell);
+        },
+
+        isEmptyCell(): boolean {
+            return this.emptyCell || this.isEmpty;
         }
     },
     methods: {
@@ -45,8 +72,8 @@ export default defineComponent({
             this.$emit('remove', this.id);
         },
 
-        setDisabled(): void {
-            console.log('YOU DISABLED ME!');
+        setCellToBeEmpty(): void {
+            this.isEmpty = true;
         }
     },
 })
@@ -54,11 +81,12 @@ export default defineComponent({
     
 <style scoped lang="scss">
 .cell {
-    width: 100px; // TODO: change from px into rem
-    height: 25px;
-    padding: 0 10px 0 10px;
-    border: 1px solid green;
-    position: relative;
+    // min-width: 6.66%; 
+    min-width: calc(100% / 15);
+    max-width: calc(100% / 15); // max 14 lines and +1 for index cell
+    min-height: 1.563rem;
+    background-color: transparent;
+    color: black;
 }
 
 .is-clickable {
