@@ -1,8 +1,6 @@
 <template>
   <div v-if="isLoaded">
     <TimePickerBar @date="filterRecords"/>
-      <VehicleLine  lineNumber="1" :vehicles="tmp"/>
-      <p>{{ filteringDate }}</p>
   </div>
 </template>
   
@@ -10,18 +8,17 @@
 import { defineComponent } from 'vue';
 import TimePickerBar from '@src/components/timepicker-bar/TimePickerBar.vue';
 import vehicleService from '@src/services/vehicle-service';
-import { VehicleDictionaryLine } from '@src/interfaces/vehicle-line-dict';
-import VehicleLine from '@src/components/vehicle-table/VehicleLine.vue';
 import { AssignedVehicle } from '@src/interfaces/assigned-vehicle';
+import { VehicleLine } from '@src/interfaces/vehicle-line';
 
 export default defineComponent({
-  components: { TimePickerBar, VehicleLine },
+  components: { TimePickerBar },
   
   data() {
     return {
       filteringDate: new Date(),
-      defaultVehicleLinesDict: {} as VehicleDictionaryLine,
-      mutableVehicleLinesDict: {} as VehicleDictionaryLine,
+      defaultVehicleLines: [] as VehicleLine[],
+      filteredVehicleLines: [] as VehicleLine[],
 
       tmp: [] as AssignedVehicle[],
       line: 1,
@@ -30,28 +27,30 @@ export default defineComponent({
   },
 
   async mounted(): Promise<void> {
-    const vehicleLineDict = await vehicleService.getVehiclesByLines();
+    const vehicleLines = await vehicleService.getVehiclesByLines();
+    this.defaultVehicleLines = vehicleLines;
+    this.filteredVehicleLines = Object.assign(this.filteredVehicleLines, vehicleLines);
 
-    this.defaultVehicleLinesDict = vehicleLineDict;
-    this.mutableVehicleLinesDict = vehicleLineDict;
-
-    //console.log(vehicleLineDict[1]);
-    this.line=1;
-    this.tmp = vehicleLineDict[1].slice(0, 14);
     this.isLoaded = true;
   },
 
   methods: {
     filterRecords(date: Date): void {
       this.filteringDate = date;
-      const filteringDateString = this.filteringDate.toDateString();
+      const filteringDateString = this.filteringDate.toString();
+      debugger;
+      this.filteredVehicleLines.length = 0;
 
       // Assumed according task what
       // assignedToLineDate < filteringDate < technicalInspectionCopleteDate
-      for (const [key] of Object.entries(this.defaultVehicleLinesDict)) {
-        this.mutableVehicleLinesDict[Number(key)] = this.defaultVehicleLinesDict[Number(key)].filter((vehicle) => { 
-          return (vehicle.assignedToLineDate < filteringDateString) && (vehicle.technicalInspectionCopleteDate ? (filteringDateString < vehicle.technicalInspectionCopleteDate) : true );
-        })
+      for (const vehicleLine of this.defaultVehicleLines) {
+        console.log(vehicleLine);
+        this.filteredVehicleLines.push({
+          lineNumber: vehicleLine.lineNumber,
+          vehicles: vehicleLine.vehicles.filter((vehicle) => {
+            return (vehicle.assignedToLineDate < filteringDateString) && (vehicle.technicalInspectionCopleteDate ? (filteringDateString < vehicle.technicalInspectionCopleteDate) : true );
+          })
+        } as VehicleLine)
       }
     }
   }

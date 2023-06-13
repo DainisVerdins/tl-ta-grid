@@ -1,20 +1,13 @@
 import { AssignedVehicle } from '@src/interfaces/assigned-vehicle';
-import { VehicleDictionaryLine } from '@src/interfaces/vehicle-line-dict';
+import { VehicleLine } from '@src/interfaces/vehicle-line';
 
 const vehicleService = {
     // returns dictionary where key is line number and value is array of AssignedVehicles with that line property
     // this heavy work must to be done in back-end
-    getVehiclesByLines: async(): Promise<VehicleDictionaryLine> => {
+    getVehiclesByLines: async(): Promise<VehicleLine[]> => {
 
         const response = await fetch('src/data/db.json');
         const vehiclesData = await response.json();
-        /*
-            id - Ieraksta identifikators;                            
-            numurs - norīkotās līnijas numurs;
-            rn - transportlīdzekļa numurs;
-            datums - datums, kad norīkots līnijā;
-            s_datums - datums, kad pabeigta tehniskā apskate un TL ir izbraucis no TA laukuma.
-        */
         let vehicles: AssignedVehicle[] = [];
         for (const item of vehiclesData.items) {
             vehicles.push({
@@ -32,12 +25,16 @@ const vehicleService = {
 
         const lines: number[] = Array.from(lineNumbersSet).sort((a: any, b: any) => { return a - b; } );
         
-        const outputDict: VehicleDictionaryLine = {};
+        const output: VehicleLine[] = [];
 
-        for (const line of lines)
-            outputDict[line] = vehicles.filter((vehicle: AssignedVehicle) => { return vehicle.assignedLineNumber === line; }).sort((x: AssignedVehicle, y: AssignedVehicle) => { return x.id - y.id; });
-
-        return outputDict;
+        for (const line of lines) {
+            output.push({
+                lineNumber: line,
+                vehicles: vehicles.filter((vehicle: AssignedVehicle) => { return vehicle.assignedLineNumber === line; })
+            } as VehicleLine);
+        }
+        
+        return output;
     }
 }
 
