@@ -1,6 +1,6 @@
 <template>
     <div class="container table-line">
-        <Cell :label="lineNumber" :cellHeight="cellHeight" />
+        <Cell :label="lineNumber" />
         <template v-for="vehicle in lineVehicles">
             <Cell
                 :ref="`cell${vehicle.id}`"
@@ -8,11 +8,10 @@
                 :vehicle="vehicle"
                 @clicked-vehicle="showModel"
                 hover
-                :cellHeight="cellHeight"
             />
         </template>
         <template v-for="_n in emptyCellsAmount">
-            <Cell empty-cell  :cellHeight="cellHeight" />
+            <Cell empty-cell />
         </template>
     </div>
     <b-modal
@@ -58,10 +57,6 @@ export default defineComponent({
             required: true,
             type: Array as PropType<AssignedVehicle[]>,
         },
-        cellHeight: {
-            default: 'md',
-            type: String as () => 'md'  | 'lg'
-        }
     },
     data(){
         return {
@@ -72,7 +67,7 @@ export default defineComponent({
         }
     },
     mounted() {
-        this.lineVehicles = this.vehicles; // TODO: remove me
+        this.lineVehicles = this.vehicles.slice(0, 14);
         
         if (this.lineVehicles.length < constants.MAX_LINES_IN_ROW)
             this.emptyCellsAmount = constants.MAX_LINES_IN_ROW - this.lineVehicles.length;
@@ -88,7 +83,7 @@ export default defineComponent({
             this.vehicleToDelete = vehicle;
         },
 
-        deleteVehicle(): void { // TODO: rename me
+        deleteVehicle(): void {
             this.hideModal();
             
             // @ts-ignore //general approach for this.$refs in typescript

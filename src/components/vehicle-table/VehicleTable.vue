@@ -1,14 +1,12 @@
 <template>
     <div class="vehicle-table" v-if="isLoaded">
-        <template v-for="vehicleLine in filteredVehicleLines">
-            <TableLine
-                :lineNumber="vehicleLine.lineNumber.toString()"
-                :vehicles="vehicleLine.vehicles"
-                @remove="removeVehicle"
-                cellHeight="lg"
-            />
+        <template v-for="vehicleLine in filteredVehicleLines" v-bind:key="vehicleLine.vehicles" >
+                <TableLine
+                    :lineNumber="vehicleLine.lineNumber.toString()"
+                    :vehicles="vehicleLine.vehicles"
+                    @remove="removeVehicle"
+                />
         </template>
-        {{ filterDate }}
     </div>
 </template>
     
@@ -58,16 +56,23 @@ export default defineComponent ({
                         })
                     } as VehicleLine);
             }
+            for (let index = 0; index < this.filteredVehicleLines.length; index++) {
+                console.log(this.filteredVehicleLines[index].vehicles.length);
+                
+            }
         },
+
         async removeVehicle(vehicleToRemove: AssignedVehicle) {
             try {
                 await vehicleService.removeVehicleById(vehicleToRemove.id);
+
                 for (let vehicleLine of this.vehicleLines) {
                     if(vehicleLine.lineNumber === vehicleToRemove.assignedLineNumber) {
-                        vehicleLine.vehicles = vehicleLine.vehicles.filter((vehicle: AssignedVehicle) => { vehicle.id !== vehicleToRemove.id; });
+                        vehicleLine.vehicles = vehicleLine.vehicles.filter((vehicle: AssignedVehicle) => { return vehicle.id !== vehicleToRemove.id; });;
                         break;
                     }
                 }
+
                 this.$toast.success(`Transportlīdzeklis ar numuru "${vehicleToRemove.vehicleNumber}" tika veiksmīgi dzēsts!`);
             } catch (error: unknown) {
                 this.$toast.error((error as Error).message);
