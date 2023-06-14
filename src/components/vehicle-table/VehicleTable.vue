@@ -5,9 +5,7 @@
             :vehicles="filteredVehicleLines[0].vehicles"
             @remove="removeVehicle"
         />
-        <button @click="makeToast"> Call toast</button>
         {{ filterDate }}
-        {{ vehicleLines }}
     </div>
 </template>
     
@@ -34,7 +32,7 @@ export default defineComponent ({
             modalShow: false,
             vehicleToDelete: {} as AssignedVehicle,
             filteredVehicleLines: [] as VehicleLine[],
-            isLoaded: false
+            isLoaded: false,
         }
     },
     async mounted(): Promise<void> {
@@ -67,16 +65,9 @@ export default defineComponent ({
                         break;
                     }
                 }
-
-                for (let vehicleLine of this.filteredVehicleLines) {
-                    if(vehicleLine.lineNumber === vehicleToRemove.assignedLineNumber) {
-                        vehicleLine.vehicles = vehicleLine.vehicles.filter((vehicle: AssignedVehicle) => { vehicle.id !== vehicleToRemove.id; });
-                        break;
-                    }
-                }
-
+                this.$toast.success(`Transportlīdzeklis ar numuru "${vehicleToRemove.id}" tika veiksmīgi dzēsts!`);
             } catch (error: unknown) {
-                
+                this.$toast.error((error as Error).message);
             }
         },
     },
