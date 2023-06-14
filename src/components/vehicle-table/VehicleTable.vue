@@ -5,6 +5,7 @@
                 :lineNumber="vehicleLine.lineNumber.toString()"
                 :vehicles="vehicleLine.vehicles"
                 @remove="removeVehicle"
+                cellHeight="lg"
             />
         </template>
         {{ filterDate }}

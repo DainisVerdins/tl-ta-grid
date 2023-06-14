@@ -1,6 +1,6 @@
 <template>
     <div class="container table-line">
-        <Cell :label="lineNumber"/>
+        <Cell :label="lineNumber" :cellHeight="cellHeight" />
         <template v-for="vehicle in lineVehicles">
             <Cell
                 :ref="`cell${vehicle.id}`"
@@ -8,10 +8,11 @@
                 :vehicle="vehicle"
                 @clicked-vehicle="showModel"
                 hover
+                :cellHeight="cellHeight"
             />
         </template>
         <template v-for="_n in emptyCellsAmount">
-            <Cell empty-cell />
+            <Cell empty-cell  :cellHeight="cellHeight" />
         </template>
     </div>
     <b-modal
@@ -57,6 +58,10 @@ export default defineComponent({
             required: true,
             type: Array as PropType<AssignedVehicle[]>,
         },
+        cellHeight: {
+            default: 'md',
+            type: String as () => 'md'  | 'lg'
+        }
     },
     data(){
         return {
