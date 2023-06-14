@@ -1,5 +1,6 @@
 <template>
     <div class="vehicle-table" v-if="isLoaded">
+        <TableHeaderLine label="Vieta" cell-height="lg" :cell-amount="14"/>
         <template v-for="vehicleLine in filteredVehicleLines" v-bind:key="vehicleLine.vehicles" >
                 <TableLine
                     :lineNumber="vehicleLine.lineNumber.toString()"
@@ -14,12 +15,14 @@
 import { defineComponent } from 'vue';
 
 import TableLine from '@src/components/vehicle-table/TableLine.vue';
+import TableHeaderLine from '@src/components/vehicle-table/TableHeaderLine.vue';
+
 import vehicleService from '@src/services/vehicle-service';
 import { AssignedVehicle } from '@src/interfaces/assigned-vehicle';
 import { VehicleLine } from '@src/interfaces/vehicle-line';
 
 export default defineComponent ({
-    components: { TableLine },
+    components: { TableLine, TableHeaderLine },
     props: {
         filterDate:{
             required: true,
@@ -55,10 +58,6 @@ export default defineComponent ({
                             return (vehicle.assignedToLineDate < filteringDate) && (vehicle.technicalInspectionCopleteDate ? (filteringDate < vehicle.technicalInspectionCopleteDate) : true );
                         })
                     } as VehicleLine);
-            }
-            for (let index = 0; index < this.filteredVehicleLines.length; index++) {
-                console.log(this.filteredVehicleLines[index].vehicles.length);
-                
             }
         },
 

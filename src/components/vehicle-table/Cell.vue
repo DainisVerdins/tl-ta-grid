@@ -74,8 +74,8 @@ export default defineComponent({
     
 <style scoped lang="scss">
 .cell {
-    min-width: calc(100% / (14 + 1));
-    max-width: calc(100% / (14 + 1)); // max 14 lines and +1 for index cell
+    min-width: 4rem;//calc(100% / (14 + 1));
+    //max-width: 50px;//calc(100% / (14 + 1)); // max 14 lines and +1 for index cell
     background-color: transparent;
     color: black;
     font-size: 1vw;
@@ -91,7 +91,8 @@ export default defineComponent({
     }
     &-lg {
         min-height: 3rem;
-        padding: calc(3rem / 2) 0;
+        font-size: 1.25rem;
+        padding: 0.5rem 1rem;
     }
 }
 
@@ -104,8 +105,6 @@ export default defineComponent({
 
 .is-static {
     background-color: gray;
-    border-left: none;
-    border-right: none;
     font-weight: 900;
 }
   </style>

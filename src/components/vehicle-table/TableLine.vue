@@ -1,6 +1,6 @@
 <template>
     <div class="container table-line">
-        <Cell :label="lineNumber" />
+        <Cell :label="lineNumber" class="first-element"/>
         <template v-for="vehicle in lineVehicles">
             <Cell
                 :ref="`cell${vehicle.id}`"
@@ -104,9 +104,13 @@ export default defineComponent({
 .table-line {
     display: flex;
     color: black;
-    margin: 0;
     padding: 0;
     border: 1px solid black;
+
+    .first-element {
+        border-left: 1px solid black;
+        border-right: 1px solid black;
+    }
 }
 </style>
     
