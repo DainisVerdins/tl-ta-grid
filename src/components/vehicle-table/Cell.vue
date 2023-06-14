@@ -1,7 +1,6 @@
 <template>
     <template v-if="isClickable">
         <b-button
-          @click="remove"
           variant="dark" 
           squared
           class="cell is-clickable"
@@ -31,20 +30,21 @@
 </template>
     
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { AssignedVehicle } from '@src/interfaces/assigned-vehicle';
+import { PropType, defineComponent } from 'vue'
   
 export default defineComponent({
     emits: ['remove'],
     props: {
-        id:{
+        vehicle:{
             required: false,
-            type: Number,
+            type: Object as PropType<AssignedVehicle>,
         },
         label:{
             required: false,
             type: String,
         },
-        canClick: {
+        hover: {
             default: false,
             type: Boolean
         },
@@ -60,7 +60,7 @@ export default defineComponent({
     },
     computed: {
         isClickable(): boolean {
-            return this.canClick && (!this.isEmptyCell);
+            return this.hover && (!this.isEmptyCell);
         },
 
         isEmptyCell(): boolean {
@@ -68,9 +68,6 @@ export default defineComponent({
         }
     },
     methods: {
-        remove(): void {
-            this.$emit('remove', this.id);
-        },
 
         setCellToBeEmpty(): void {
             this.isEmpty = true;
@@ -86,7 +83,9 @@ export default defineComponent({
     max-width: calc(100% / 15); // max 14 lines and +1 for index cell
     min-height: 1.563rem;
     background-color: transparent;
+    padding: 0;
     color: black;
+    font-size: 1vw;
 }
 
 .is-clickable {

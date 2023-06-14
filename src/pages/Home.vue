@@ -1,11 +1,6 @@
 <template>
-  <div v-if="isLoaded">
-    <TimePickerBar @date="filterRecords"/>
-    <VehicleTable
-      :vehicle-lines="defaultVehicleLines"
-      :filter-date="filteringDate"
-      />
-  </div>
+    <TimePickerBar @date="changeFilterDate"/>
+    <VehicleTable :filter-date="filteringDate" />
 </template>
   
 <script lang="ts">
@@ -13,9 +8,6 @@ import { defineComponent } from 'vue';
 import TimePickerBar from '@src/components/timepicker-bar/TimePickerBar.vue';
 import VehicleTable from '@src/components/vehicle-table/VehicleTable.vue';
 
-import vehicleService from '@src/services/vehicle-service';
-
-import { VehicleLine } from '@src/interfaces/vehicle-line';
 
 export default defineComponent({
   components: { TimePickerBar, VehicleTable },
@@ -23,36 +15,16 @@ export default defineComponent({
   data() {
     return {
       filteringDate: '',
-      defaultVehicleLines: [] as VehicleLine[],
-      filteredVehicleLines: [] as VehicleLine[],
-      isLoaded: false
     }
   },
 
-  async mounted(): Promise<void> {
-    const vehicleLines = await vehicleService.getVehiclesByLines();
-    this.defaultVehicleLines = vehicleLines;
-    this.filteredVehicleLines = Object.assign(this.filteredVehicleLines, vehicleLines);
+  mounted(): void {
     this.filteringDate = new Date().toString();
-    this.isLoaded = true;
   },
 
   methods: {
-    filterRecords(date: string): void {
-      this.filteringDate = date;
-
-      this.filteredVehicleLines.length = 0;
-      // Assumed according task what
-      // assignedToLineDate < filteringDate < technicalInspectionCopleteDate
-      for (const vehicleLine of this.defaultVehicleLines) {
-        console.log(vehicleLine);
-        this.filteredVehicleLines.push({
-          lineNumber: vehicleLine.lineNumber,
-          vehicles: vehicleLine.vehicles.filter((vehicle) => {
-            return (vehicle.assignedToLineDate < this.filteringDate) && (vehicle.technicalInspectionCopleteDate ? (this.filteringDate < vehicle.technicalInspectionCopleteDate) : true );
-          })
-        } as VehicleLine)
-      }
+    changeFilterDate(newFilteringDate: string) {
+      this.filteringDate = newFilteringDate;
     }
   }
 })

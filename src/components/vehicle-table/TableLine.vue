@@ -1,33 +1,51 @@
 <template>
     <div class="container">
         <Cell :label="lineNumber"/>
-        <template v-for="vehicle in lineVehicles.slice(0, 14)">
+        <template v-for="vehicle in lineVehicles">
             <Cell
                 :ref="`cell${vehicle.id}`"
                 :label="vehicle.vehicleNumber"
-                :id="vehicle.id"
-                @remove="removeVehicle"
-                can-click
+                @click="showModel(vehicle)"
+                hover
             />
         </template>
+        <template v-for="_n in emptyCellsAmount">
+            <Cell empty-cell />
+        </template>
     </div>
+    <b-modal
+        v-model="modalShow" 
+        title="Vai izdzēst šo transportlīdzeklī?"
+    >
+        <p class="my-4">{{ deleteMessage }}</p>
+
+        <template #footer>
+            <b-button
+                class="float-right"
+                variant="primary"
+                @click="hideModal"
+            >
+                Atcelt
+            </b-button>
+            <b-button
+                class="float-right"
+                variant="danger"
+                @click="deleteVehicle"
+            >
+                Izņemt
+            </b-button>
+        </template>
+    </b-modal>
 </template>
     
 <script lang="ts">
 import { AssignedVehicle } from '@src/interfaces/assigned-vehicle';
 import { PropType, defineComponent } from 'vue';
 import Cell from '@src/components/vehicle-table/Cell.vue';
+import { constants } from '@src/constants/constants';
 
 export default defineComponent({
     components: { Cell },
-    data(){
-        return {
-            lineVehicles: [] as AssignedVehicle[]
-        }
-    },
-    mounted() {
-        this.lineVehicles = this.vehicles;
-    },
     props: {
         lineNumber:{
             required: true,
@@ -38,10 +56,42 @@ export default defineComponent({
             type: Array as PropType<AssignedVehicle[]>,
         },
     },
+    data(){
+        return {
+            lineVehicles: [] as AssignedVehicle[],
+            emptyCellsAmount: 0,
+            modalShow: false,
+            vehicleToDelete: {} as AssignedVehicle
+        }
+    },
+    mounted() {
+        this.lineVehicles = this.vehicles.slice(0, 10); // TODO: remove me
+        
+        if (this.lineVehicles.length < constants.MAX_LINES_IN_ROW)
+            this.emptyCellsAmount = constants.MAX_LINES_IN_ROW - this.lineVehicles.length;
+    },
+    computed: {
+        deleteMessage(): string {
+            return `Vai izņemt transportlīdzekli "${this.vehicleToDelete.vehicleNumber}" no līnijas?`
+        }
+    },
     methods: {
-        removeVehicle(vehicleId: Number): void {
-            //console.log(vehicleId);
-            this.$refs[`cell${vehicleId}`][0].setCellToBeEmpty(); // Get make cell from ref to bee read only
+        showModel(vehicle: AssignedVehicle): void {
+            this.modalShow = true;
+            this.vehicleToDelete = vehicle;
+        },
+
+        deleteVehicle(): void { // TODO: rename me
+            this.hideModal();
+            
+            // @ts-ignore //general approach for this.$refs in typescript
+            this.$refs[`cell${this.vehicleToDelete.id}`][0].setCellToBeEmpty();
+            // TODO: logic to emit vehicle to delete
+            // logic to show some how toast what data was deleted
+        },
+
+        hideModal(): void {
+            this.modalShow = false;
         }
     },
 })
