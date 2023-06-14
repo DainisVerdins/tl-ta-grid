@@ -1,11 +1,12 @@
 <template>
-    <div class="container">
+    <div class="container table-line">
         <Cell :label="lineNumber"/>
         <template v-for="vehicle in lineVehicles">
             <Cell
                 :ref="`cell${vehicle.id}`"
                 :label="vehicle.vehicleNumber"
-                @click="showModel(vehicle)"
+                :vehicle="vehicle"
+                @clicked-vehicle="showModel"
                 hover
             />
         </template>
@@ -66,7 +67,7 @@ export default defineComponent({
         }
     },
     mounted() {
-        this.lineVehicles = this.vehicles.slice(0, 10); // TODO: remove me
+        this.lineVehicles = this.vehicles; // TODO: remove me
         
         if (this.lineVehicles.length < constants.MAX_LINES_IN_ROW)
             this.emptyCellsAmount = constants.MAX_LINES_IN_ROW - this.lineVehicles.length;
@@ -100,5 +101,12 @@ export default defineComponent({
 </script>
     
 <style scoped lang="scss">
+.table-line {
+    display: flex;
+    color: black;
+    margin: 0;
+    padding: 0;
+    border: 1px solid black;
+}
 </style>
     

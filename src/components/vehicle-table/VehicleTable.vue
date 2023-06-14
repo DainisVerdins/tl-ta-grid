@@ -1,10 +1,12 @@
 <template>
     <div class="vehicle-table" v-if="isLoaded">
-        <TableLine
-            :lineNumber="filteredVehicleLines[0].lineNumber.toString()"
-            :vehicles="filteredVehicleLines[0].vehicles"
-            @remove="removeVehicle"
-        />
+        <template v-for="vehicleLine in filteredVehicleLines">
+            <TableLine
+                :lineNumber="vehicleLine.lineNumber.toString()"
+                :vehicles="vehicleLine.vehicles"
+                @remove="removeVehicle"
+            />
+        </template>
         {{ filterDate }}
     </div>
 </template>
@@ -65,7 +67,7 @@ export default defineComponent ({
                         break;
                     }
                 }
-                this.$toast.success(`Transportlīdzeklis ar numuru "${vehicleToRemove.id}" tika veiksmīgi dzēsts!`);
+                this.$toast.success(`Transportlīdzeklis ar numuru "${vehicleToRemove.vehicleNumber}" tika veiksmīgi dzēsts!`);
             } catch (error: unknown) {
                 this.$toast.error((error as Error).message);
             }

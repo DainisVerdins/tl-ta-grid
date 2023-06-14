@@ -1,31 +1,20 @@
 <template>
     <template v-if="isClickable">
-        <b-button
-          variant="dark" 
-          squared
-          class="cell is-clickable"
+        <div
+          :class="['cell is-clickable container',`size-${cellHeight}`]"
+          @click="clickedVehicle"
         >
             {{ label }}
-        </b-button>
+        </div>
     </template>
     <template v-else-if="isEmptyCell" >
-        <b-button
-          variant="dark" 
-          squared
-          disabled
-          class="cell" 
-        >
-        </b-button>
+        <div :class="['cell container',`size-${cellHeight}`]">
+        </div>
     </template>
     <template v-else>
-        <b-button
-          variant="dark" 
-          squared
-          disabled
-          class="cell" 
-        >
-        {{ label }}
-        </b-button>
+        <div :class="['cell  is-static container',`size-${cellHeight}`]">
+            {{ label }}
+        </div>
     </template>
 </template>
     
@@ -34,7 +23,7 @@ import { AssignedVehicle } from '@src/interfaces/assigned-vehicle';
 import { PropType, defineComponent } from 'vue'
   
 export default defineComponent({
-    emits: ['remove'],
+    emits: ['clickedVehicle'],
     props: {
         vehicle:{
             required: false,
@@ -51,6 +40,10 @@ export default defineComponent({
         emptyCell: {
             default: false,
             type: Boolean
+        },
+        cellHeight: {
+            default: 'md',
+            type: String as () => 'md'  | 'lg'
         }
     },
     data() {
@@ -68,7 +61,10 @@ export default defineComponent({
         }
     },
     methods: {
-
+        clickedVehicle(): void {
+            if (!this.isEmpty)
+                this.$emit('clickedVehicle', this.vehicle);
+        },
         setCellToBeEmpty(): void {
             this.isEmpty = true;
         }
@@ -78,14 +74,25 @@ export default defineComponent({
     
 <style scoped lang="scss">
 .cell {
-    // min-width: 6.66%; 
-    min-width: calc(100% / 15);
-    max-width: calc(100% / 15); // max 14 lines and +1 for index cell
-    min-height: 1.563rem;
+    min-width: calc(100% / (14 + 1));
+    max-width: calc(100% / (14 + 1)); // max 14 lines and +1 for index cell
     background-color: transparent;
-    padding: 0;
     color: black;
     font-size: 1vw;
+    border-left: 1px solid #dee2e6;
+    border-right: 1px solid #dee2e6;
+    text-align: center;
+}
+
+.size {
+    &-md {
+        min-height: 1.5rem;
+        padding: calc(1.5rem / 2) 0;
+    }
+    &-lg {
+        min-height: 3rem;
+        padding: calc(3rem / 2) 0;
+    }
 }
 
 .is-clickable {
@@ -93,6 +100,13 @@ export default defineComponent({
         background-color: yellow;
         cursor: pointer;
     }
+}
+
+.is-static {
+    background-color: gray;
+    border-left: none;
+    border-right: none;
+    font-weight: 900;
 }
   </style>
     
