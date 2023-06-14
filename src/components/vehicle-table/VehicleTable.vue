@@ -3,9 +3,11 @@
         <TableLine
             :lineNumber="filteredVehicleLines[0].lineNumber.toString()"
             :vehicles="filteredVehicleLines[0].vehicles"
+            @remove="removeVehicle"
         />
-
+        <button @click="makeToast"> Call toast</button>
         {{ filterDate }}
+        {{ vehicleLines }}
     </div>
 </template>
     
@@ -17,7 +19,7 @@ import vehicleService from '@src/services/vehicle-service';
 import { AssignedVehicle } from '@src/interfaces/assigned-vehicle';
 import { VehicleLine } from '@src/interfaces/vehicle-line';
 
-export default defineComponent({
+export default defineComponent ({
     components: { TableLine },
     props: {
         filterDate:{
@@ -56,8 +58,27 @@ export default defineComponent({
                     } as VehicleLine);
             }
         },
-        removeVehicle(vehicleToRemove: AssignedVehicle){
-        }
+        async removeVehicle(vehicleToRemove: AssignedVehicle) {
+            try {
+                await vehicleService.removeVehicleById(vehicleToRemove.id);
+                for (let vehicleLine of this.vehicleLines) {
+                    if(vehicleLine.lineNumber === vehicleToRemove.assignedLineNumber) {
+                        vehicleLine.vehicles = vehicleLine.vehicles.filter((vehicle: AssignedVehicle) => { vehicle.id !== vehicleToRemove.id; });
+                        break;
+                    }
+                }
+
+                for (let vehicleLine of this.filteredVehicleLines) {
+                    if(vehicleLine.lineNumber === vehicleToRemove.assignedLineNumber) {
+                        vehicleLine.vehicles = vehicleLine.vehicles.filter((vehicle: AssignedVehicle) => { vehicle.id !== vehicleToRemove.id; });
+                        break;
+                    }
+                }
+
+            } catch (error: unknown) {
+                
+            }
+        },
     },
     watch: {
         filterDate(newDate: string) {

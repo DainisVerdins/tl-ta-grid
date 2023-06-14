@@ -35,6 +35,13 @@ const vehicleService = {
         }
         
         return output;
+    },
+
+    removeVehicleById: async(id: number): Promise<void> => {
+        const promise = new Promise((resolve) => {
+            setTimeout(() => resolve(id), 1000)
+        });
+        await promise;
     }
 }
 

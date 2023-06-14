@@ -46,6 +46,7 @@ import { constants } from '@src/constants/constants';
 
 export default defineComponent({
     components: { Cell },
+    emits: ['remove'],
     props: {
         lineNumber:{
             required: true,
@@ -86,8 +87,9 @@ export default defineComponent({
             
             // @ts-ignore //general approach for this.$refs in typescript
             this.$refs[`cell${this.vehicleToDelete.id}`][0].setCellToBeEmpty();
-            // TODO: logic to emit vehicle to delete
-            // logic to show some how toast what data was deleted
+
+            this.$emit('remove',this.vehicleToDelete);
+            
         },
 
         hideModal(): void {
