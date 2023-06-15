@@ -11,6 +11,7 @@
                 :vehicle="vehicle"
                 @clicked-vehicle="showModel"
                 :last-cell="(index+1) === numberOfCellsInLine"
+                :can-be-delete="canDeleteVehicle(vehicle)"
             />
             
         </template>
@@ -108,6 +109,9 @@ export default defineComponent({
         hideModal(): void {
             this.modalShow = false;
         },
+        canDeleteVehicle(vehicle: AssignedVehicle): boolean {
+            return Boolean(vehicle?.technicalInspectionCopleteDate);
+        }
     },
 })
 </script>

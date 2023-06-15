@@ -34,7 +34,7 @@
           @click="filter"
           variant="primary" 
         >
-          Filtrēt
+          Parādīt
         </b-button>
       </div>
     </div>

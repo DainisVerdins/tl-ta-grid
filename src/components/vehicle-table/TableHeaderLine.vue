@@ -27,7 +27,6 @@ export default defineComponent({
             required: true,
             type: String,
         },
-
         cellHeight: {
             default: 'md',
             type: String as () => 'md'  | 'lg'
@@ -50,5 +49,5 @@ export default defineComponent({
         border-top: 1px solid black;
     }
 }
-  </style>
+</style>
     

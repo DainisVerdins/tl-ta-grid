@@ -1,5 +1,5 @@
 <template>
-    <TimePickerBar @date="changeFilterDate"/>
+    <TimePickerBar @date="changeFilterDate" />
     <VehicleTable :filter-date="filteringDate" />
 </template>
   
@@ -20,13 +20,9 @@ export default defineComponent({
 
   methods: {
     changeFilterDate(newFilteringDate: string) {
-      console.log('newFilteringDate', newFilteringDate);
       this.filteringDate = newFilteringDate;
     }
   }
 })
 </script>
-  
-<style scoped lang="scss">
-</style>
   

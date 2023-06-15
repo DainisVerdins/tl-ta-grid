@@ -2,10 +2,13 @@
     <Cell
         @click="clickedVehicle"
         :label="cellLabel"
-        :class="['table-cell', isClickable ? 'clickable' : '', lastCell ? 'is-last-table-cell' : '']"
+        :class="['table-cell', clickableStyle, lastCellStyle]"
     >
-        <template #body v-if="isClickable">
-            <i class="bi bi-exclamation-circle"></i>
+        <template #body v-if="canBeDelete">
+            <i
+                class="bi bi-exclamation-circle"
+                v-b-tooltip.hover.top title="Nevar izņemt TL, jo nav pabeigta teh apskate"
+            ></i>
         </template>
     </Cell>
 </template>
@@ -37,25 +40,37 @@ export default defineComponent({
         emptyCell: {
             default: false,
             type: Boolean
+        },
+        canBeDelete: {
+            default: false,
+            type: Boolean
         }
     },
+
     data() {
         return {
             isEmpty: false,
             cellLabel:'',
         }
     },
+
     mounted(){
         this.cellLabel = this.label;
     },
+
     computed: {
-        isClickable(): boolean {
-            return !this.isEmpty && (!this.emptyCell);
+        clickableStyle(): string {
+            const isClickable = !this.isEmpty && (!this.emptyCell) && !this.canBeDelete;
+
+            return isClickable ? 'clickable' : '';
         },
+        lastCellStyle(): string {
+            return this.lastCell ? 'is-last-table-cell' : '';
+        }
     },
     methods: {
         clickedVehicle(): void {
-            if (!this.isEmpty)
+            if (!this.isEmpty && !this.canBeDelete)
                 this.$emit('clickedVehicle', this.vehicle);
         },
         setCellToBeEmpty(): void {

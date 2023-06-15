@@ -58,6 +58,5 @@ export default defineComponent({
 .first-header-table-cell {
     border-left: 1px solid black;
 }
-
 </style>
     

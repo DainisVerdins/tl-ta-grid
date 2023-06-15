@@ -2,23 +2,29 @@
     <div class="vehicle-table">
         <template v-if="!filterDate">
             <div class="d-flex justify-content-center mb-3">
-                <h1>Izvēlies laiku!</h1>
+                <h1>Izvēlies datumu un laiku un spied "Parādīt"!</h1>
             </div>
         </template>
         <template v-else-if="isLoaded">
             <TableHeaderLine label="Vieta" cell-height="lg" :cell-amount="14"/>
-            <template v-for="vehicleLine in filteredVehicleLines" v-bind:key="vehicleLine.vehicles" >
-                    <TableLine
-                        :lineNumber="vehicleLine.lineNumber.toString()"
-                        :vehicles="vehicleLine.vehicles"
-                        @remove="removeVehicle"
-                    />
+            <template 
+                v-for="vehicleLine in filteredVehicleLines" 
+                v-bind:key="vehicleLine.vehicles" 
+            >
+                <TableLine
+                    :lineNumber="vehicleLine.lineNumber.toString()"
+                    :vehicles="vehicleLine.vehicles"
+                    @remove="removeVehicle"
+                />
             </template>
         </template>
         <template v-else>
             <div class="d-flex justify-content-center mb-3">
                 <p>Loading data please wait!</p>
-                <b-spinner label="Loading..." small></b-spinner>
+                <b-spinner
+                    label="Loading..."
+                    small 
+                />
             </div>
         </template>
     </div>
@@ -53,7 +59,7 @@ export default defineComponent ({
         }
     },
     async mounted(): Promise<void> {
-        this.vehicleLines = await vehicleService.getVehiclesByLines();;  
+        this.vehicleLines = await vehicleService.getVehiclesByLines(); 
         this.isLoaded = true;
     },
    
