@@ -48,6 +48,7 @@ export default defineComponent({
     border-right: 1px solid black;
     border-bottom: 1px solid black;
     background-color: gray;
+    font-weight: bold;
 }
 
 .last-header-table-cell {

@@ -18,12 +18,9 @@ export default defineComponent({
     }
   },
 
-  mounted(): void {
-    this.filteringDate = new Date().toString();
-  },
-
   methods: {
     changeFilterDate(newFilteringDate: string) {
+      console.log('newFilteringDate', newFilteringDate);
       this.filteringDate = newFilteringDate;
     }
   }

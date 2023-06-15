@@ -1,19 +1,26 @@
 <template>
-    <div class="vehicle-table" v-if="isLoaded">
-        <TableHeaderLine label="Vieta" cell-height="lg" :cell-amount="14"/>
-        <!--<template v-for="vehicleLine in filteredVehicleLines" v-bind:key="vehicleLine.vehicles" >
-                <TableLine
-                    :lineNumber="vehicleLine.lineNumber.toString()"
-                    :vehicles="vehicleLine.vehicles"
-                    @remove="removeVehicle"
-                />
-        </template>-->
-
-        <TableLine
-                    :lineNumber="filteredVehicleLines[0].lineNumber.toString()"
-                    :vehicles="filteredVehicleLines[0].vehicles"
-                    @remove="removeVehicle"
-                />
+    <div class="vehicle-table">
+        <template v-if="!filterDate">
+            <div class="d-flex justify-content-center mb-3">
+                <h1>Izvēlies laiku!</h1>
+            </div>
+        </template>
+        <template v-else-if="isLoaded">
+            <TableHeaderLine label="Vieta" cell-height="lg" :cell-amount="14"/>
+            <template v-for="vehicleLine in filteredVehicleLines" v-bind:key="vehicleLine.vehicles" >
+                    <TableLine
+                        :lineNumber="vehicleLine.lineNumber.toString()"
+                        :vehicles="vehicleLine.vehicles"
+                        @remove="removeVehicle"
+                    />
+            </template>
+        </template>
+        <template v-else>
+            <div class="d-flex justify-content-center mb-3">
+                <p>Loading data please wait!</p>
+                <b-spinner label="Loading..." small></b-spinner>
+            </div>
+        </template>
     </div>
 </template>
     
@@ -46,11 +53,11 @@ export default defineComponent ({
         }
     },
     async mounted(): Promise<void> {
-        const vehicleLines = await vehicleService.getVehiclesByLines();
-        this.vehicleLines = vehicleLines;
-        this.filterRecordsByDate(this.filterDate);
+        this.vehicleLines = await vehicleService.getVehiclesByLines();;  
         this.isLoaded = true;
     },
+   
+   
     methods: {
         filterRecordsByDate(filteringDate: string): void {
             this.filteredVehicleLines.length = 0;

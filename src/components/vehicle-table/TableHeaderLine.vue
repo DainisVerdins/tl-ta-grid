@@ -4,11 +4,13 @@
             :label="label"
             :cell-height="cellHeight"
             first-cell
+            class="cell-border-top"
         />
         <template v-for="n in cellAmount">
             <HeaderCell
                 :label="n.toString()"
                 :cell-height="cellHeight"
+                class="cell-border-top"
             />
         </template>
     </div>
@@ -43,6 +45,10 @@ export default defineComponent({
     display: flex;
     color: black;
     padding: 0;
+
+    .cell-border-top {
+        border-top: 1px solid black;
+    }
 }
   </style>
     
