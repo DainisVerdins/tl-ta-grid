@@ -3,7 +3,11 @@
         @click="clickedVehicle"
         :label="cellLabel"
         :class="['table-cell', isClickable ? 'clickable' : '', lastCell ? 'is-last-table-cell' : '']"
-    />
+    >
+        <template #body v-if="isClickable">
+            <i class="bi bi-exclamation-circle"></i>
+        </template>
+    </Cell>
 </template>
     
 <script lang="ts">
@@ -47,7 +51,7 @@ export default defineComponent({
     computed: {
         isClickable(): boolean {
             return !this.isEmpty && (!this.emptyCell);
-        }
+        },
     },
     methods: {
         clickedVehicle(): void {
