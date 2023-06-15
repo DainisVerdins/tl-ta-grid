@@ -3,7 +3,6 @@
         <Cell
             :label="label"
             :cell-height="cellHeight"
-            class="first-element"
         />
         <template v-for="n in cellAmount">
             <Cell
@@ -16,7 +15,7 @@
     
 <script lang="ts">
 import { defineComponent } from 'vue';
-import Cell from '@src/components/vehicle-table/Cell.vue';
+import Cell from '@src/components/cell/Cell.vue';
   
 export default defineComponent({
     components: { Cell },
@@ -43,12 +42,6 @@ export default defineComponent({
     display: flex;
     color: black;
     padding: 0;
-    border: 1px solid black;
-
-    .first-element {
-        border-left: 1px solid black;
-        border-right: 1px solid black;
-    }
 }
   </style>
     

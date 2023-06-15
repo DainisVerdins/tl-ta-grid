@@ -1,17 +1,21 @@
 <template>
     <div class="container table-line">
-        <Cell :label="lineNumber" class="first-element"/>
-        <template v-for="vehicle in lineVehicles">
-            <Cell
+        <Cell :label="lineNumber.toString()"/>
+        <template v-for="(vehicle, index) in lineVehicles">
+            <TableCell
                 :ref="`cell${vehicle.id}`"
                 :label="vehicle.vehicleNumber"
                 :vehicle="vehicle"
                 @clicked-vehicle="showModel"
-                hover
+                :last-cell="(index+1) === numberOfCellsInLine"
             />
+            
         </template>
         <template v-for="_n in emptyCellsAmount">
-            <Cell empty-cell />
+            <TableCell
+                :last-cell="_n === emptyCellsAmount"
+                empty-cell
+            />
         </template>
     </div>
     <b-modal
@@ -42,11 +46,11 @@
 <script lang="ts">
 import { AssignedVehicle } from '@src/interfaces/assigned-vehicle';
 import { PropType, defineComponent } from 'vue';
-import Cell from '@src/components/vehicle-table/Cell.vue';
-import { constants } from '@src/constants/constants';
+import TableCell from '@src/components/vehicle-table/TableCell.vue';
+import Cell from '@src/components/cell/Cell.vue';
 
 export default defineComponent({
-    components: { Cell },
+    components: { TableCell, Cell },
     emits: ['remove'],
     props: {
         lineNumber:{
@@ -57,6 +61,11 @@ export default defineComponent({
             required: true,
             type: Array as PropType<AssignedVehicle[]>,
         },
+        
+        numberOfCellsInLine: {
+            default: 14,
+            type: Number,
+        }
     },
     data(){
         return {
@@ -67,10 +76,10 @@ export default defineComponent({
         }
     },
     mounted() {
-        this.lineVehicles = this.vehicles.slice(0, 14);
+        this.lineVehicles = this.vehicles.slice(0, this.numberOfCellsInLine);
         
-        if (this.lineVehicles.length < constants.MAX_LINES_IN_ROW)
-            this.emptyCellsAmount = constants.MAX_LINES_IN_ROW - this.lineVehicles.length;
+        if (this.lineVehicles.length < this.numberOfCellsInLine)
+            this.emptyCellsAmount = this.numberOfCellsInLine - this.lineVehicles.length;
     },
     computed: {
         deleteMessage(): string {
@@ -95,7 +104,7 @@ export default defineComponent({
 
         hideModal(): void {
             this.modalShow = false;
-        }
+        },
     },
 })
 </script>
@@ -105,12 +114,6 @@ export default defineComponent({
     display: flex;
     color: black;
     padding: 0;
-    border: 1px solid black;
-
-    .first-element {
-        border-left: 1px solid black;
-        border-right: 1px solid black;
-    }
 }
 </style>
     

@@ -1,13 +1,19 @@
 <template>
     <div class="vehicle-table" v-if="isLoaded">
         <TableHeaderLine label="Vieta" cell-height="lg" :cell-amount="14"/>
-        <template v-for="vehicleLine in filteredVehicleLines" v-bind:key="vehicleLine.vehicles" >
+        <!--<template v-for="vehicleLine in filteredVehicleLines" v-bind:key="vehicleLine.vehicles" >
                 <TableLine
                     :lineNumber="vehicleLine.lineNumber.toString()"
                     :vehicles="vehicleLine.vehicles"
                     @remove="removeVehicle"
                 />
-        </template>
+        </template>-->
+
+        <TableLine
+                    :lineNumber="filteredVehicleLines[0].lineNumber.toString()"
+                    :vehicles="filteredVehicleLines[0].vehicles"
+                    @remove="removeVehicle"
+                />
     </div>
 </template>
     
