@@ -62,8 +62,6 @@ export default defineComponent ({
         this.vehicleLines = await vehicleService.getVehiclesByLines(); 
         this.isLoaded = true;
     },
-   
-   
     methods: {
         filterRecordsByDate(filteringDate: string): void {
             this.filteredVehicleLines.length = 0;
