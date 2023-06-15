@@ -27,7 +27,6 @@ export default defineComponent({
         background-color: transparent;
         color: black;
         font-size: 1vw;
-        border: 1px solid black;
         text-align: center;
     }
 
@@ -38,8 +37,6 @@ export default defineComponent({
         }
         &-lg {
             min-height: 3rem;
-            //font-size: 1.25rem;
-            //padding: 0.5rem 1rem;
             padding: calc(3rem / 2) 0;
         }
     }

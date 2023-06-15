@@ -1,11 +1,12 @@
 <template>
     <div class="container table-header-line">
-        <Cell
+        <HeaderCell
             :label="label"
             :cell-height="cellHeight"
+            first-cell
         />
         <template v-for="n in cellAmount">
-            <Cell
+            <HeaderCell
                 :label="n.toString()"
                 :cell-height="cellHeight"
             />
@@ -15,13 +16,13 @@
     
 <script lang="ts">
 import { defineComponent } from 'vue';
-import Cell from '@src/components/cell/Cell.vue';
+import HeaderCell from '@src/components/vehicle-table/HeaderCell.vue';
   
 export default defineComponent({
-    components: { Cell },
+    components: { HeaderCell },
     props: {
         label:{
-            required: false,
+            required: true,
             type: String,
         },
 

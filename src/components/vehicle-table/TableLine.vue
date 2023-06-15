@@ -1,6 +1,9 @@
 <template>
     <div class="container table-line">
-        <Cell :label="lineNumber.toString()"/>
+        <HeaderCell
+            :label="lineNumber.toString()"
+            first-cell
+        />
         <template v-for="(vehicle, index) in lineVehicles">
             <TableCell
                 :ref="`cell${vehicle.id}`"
@@ -47,10 +50,10 @@
 import { AssignedVehicle } from '@src/interfaces/assigned-vehicle';
 import { PropType, defineComponent } from 'vue';
 import TableCell from '@src/components/vehicle-table/TableCell.vue';
-import Cell from '@src/components/cell/Cell.vue';
+import HeaderCell from '@src/components/vehicle-table/HeaderCell.vue';
 
 export default defineComponent({
-    components: { TableCell, Cell },
+    components: { TableCell, HeaderCell },
     emits: ['remove'],
     props: {
         lineNumber:{

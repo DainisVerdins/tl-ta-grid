@@ -87,6 +87,7 @@ export default defineComponent ({
     watch: {
         filterDate(newDate: string) {
             this.filterRecordsByDate(newDate);
+            this.$toast.info('Filtrēts!');
         },
   },
 })
