@@ -15,7 +15,6 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .page {
-  margin: 1.25rem;
-  padding: 1.25rem;
+  background-color: #242424;
 }
 </style>

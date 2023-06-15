@@ -2,21 +2,31 @@
     <div class="vehicle-table">
         <template v-if="!filterDate">
             <div class="d-flex justify-content-center mb-3">
-                <h1>Izvēlies datumu un laiku un spied "Parādīt"!</h1>
+                <div class="vehicle-table-stub">
+                    <h1>Izvēlies datumu un laiku un spied "Parādīt"!</h1>
+                </div>
             </div>
         </template>
         <template v-else-if="isLoaded">
-            <TableHeaderLine label="Vieta" cell-height="lg" :cell-amount="14"/>
-            <template 
-                v-for="vehicleLine in filteredVehicleLines" 
-                v-bind:key="vehicleLine.vehicles" 
-            >
-                <TableLine
-                    :lineNumber="vehicleLine.lineNumber.toString()"
-                    :vehicles="vehicleLine.vehicles"
-                    @remove="removeVehicle"
+            <div class="vehicle-table-grid">
+                <TableHeaderLine
+                    label="Vieta"
+                    cell-height="lg"
+                    :cell-amount="cellAmount"
                 />
-            </template>
+                <template 
+                    v-for="(vehicleLine, index) in filteredVehicleLines" 
+                    v-bind:key="vehicleLine.vehicles" 
+                >
+                    <TableLine
+                        :lineNumber="vehicleLine.lineNumber.toString()"
+                        :vehicles="vehicleLine.vehicles"
+                        @remove="removeVehicle"
+                        :cell-amount="cellAmount"
+                        :last-line="isLastLine(index)"
+                    />
+                </template>
+            </div>
         </template>
         <template v-else>
             <div class="d-flex justify-content-center mb-3">
@@ -43,10 +53,14 @@ import { VehicleLine } from '@src/interfaces/vehicle-line';
 export default defineComponent ({
     components: { TableLine, TableHeaderLine },
     props: {
-        filterDate:{
+        filterDate: {
             required: true,
             type: String,
         },
+        cellAmount: {
+            default: 14,
+            type: Number,
+        }
     },
     data(){
         return {
@@ -94,6 +108,9 @@ export default defineComponent ({
                 this.$toast.error((error as Error).message);
             }
         },
+        isLastLine(index: number): boolean {
+            return (index + 1) === this.filteredVehicleLines.length;
+        }
     },
     watch: {
         filterDate(newDate: string) {
@@ -105,10 +122,23 @@ export default defineComponent ({
 </script>
     
 <style scoped lang="scss">
+@import '@src/styles/variables';
   .vehicle-table {
-    margin: 20px;
-    padding: 10px;
-    border: 1px solid red;
+    margin: $margin-normal;
+
+    .vehicle-table-grid {
+        border: $border-size solid pink;
+        background-color: pink;
+        border-radius: $border-radius;
+    }
+
+    .vehicle-table-stub {
+        background: #fff;
+        border-radius: $border-radius;
+        margin: $margin-normal;
+        padding: $padding-normal;
+        background-color: pink;
+    }
   }
   </style>
     

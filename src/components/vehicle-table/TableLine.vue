@@ -1,8 +1,9 @@
 <template>
-    <div class="container table-line">
+    <div class="table-line">
         <HeaderCell
             :label="lineNumber.toString()"
             first-cell
+            :class="[lastLine ? 'first-element' : '']"
         />
         <template v-for="(vehicle, index) in lineVehicles">
             <TableCell
@@ -10,15 +11,17 @@
                 :label="vehicle.vehicleNumber"
                 :vehicle="vehicle"
                 @clicked-vehicle="showModel"
-                :last-cell="(index+1) === numberOfCellsInLine"
+                :last-cell="isLastFilledCell(index + 1)"
                 :can-be-delete="canDeleteVehicle(vehicle)"
+                :class="[lastLine && isLastFilledCell(index + 1) ? 'last-element' : '']"
             />
             
         </template>
         <template v-for="_n in emptyCellsAmount">
             <TableCell
-                :last-cell="_n === emptyCellsAmount"
+                :last-cell="isLastEmptyCell(_n)"
                 empty-cell
+                :class="[lastLine && isLastEmptyCell(_n) ? 'last-element' : '']"
             />
         </template>
     </div>
@@ -65,10 +68,13 @@ export default defineComponent({
             required: true,
             type: Array as PropType<AssignedVehicle[]>,
         },
-        
-        numberOfCellsInLine: {
+        cellAmount: {
             default: 14,
-            type: Number,
+            type: Number
+        },
+        lastLine: {
+            default: false,
+            type: Boolean
         }
     },
     data(){
@@ -80,10 +86,10 @@ export default defineComponent({
         }
     },
     mounted() {
-        this.lineVehicles = this.vehicles.slice(0, this.numberOfCellsInLine);
+        this.lineVehicles = this.vehicles.slice(0, this.cellAmount);
         
-        if (this.lineVehicles.length < this.numberOfCellsInLine)
-            this.emptyCellsAmount = this.numberOfCellsInLine - this.lineVehicles.length;
+        if (this.lineVehicles.length < this.cellAmount)
+            this.emptyCellsAmount = this.cellAmount - this.lineVehicles.length;
     },
     computed: {
         deleteMessage(): string {
@@ -111,16 +117,32 @@ export default defineComponent({
         },
         canDeleteVehicle(vehicle: AssignedVehicle): boolean {
             return Boolean(vehicle?.technicalInspectionCopleteDate);
+        },
+        isLastEmptyCell(value: Number): boolean {
+            return value === this.emptyCellsAmount;
+        },
+        isLastFilledCell(value: Number): boolean {
+            return value === this.cellAmount;
         }
     },
 })
 </script>
     
 <style scoped lang="scss">
+@import '@src/styles/variables';
 .table-line {
     display: flex;
     color: black;
     padding: 0;
+
+
+    .first-element {
+        border-bottom-left-radius: $border-radius;
+    }
+
+    .last-element {
+        border-bottom-right-radius: $border-radius;
+    }
 }
 </style>
     

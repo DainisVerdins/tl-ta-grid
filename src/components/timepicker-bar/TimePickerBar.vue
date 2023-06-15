@@ -121,13 +121,13 @@ export default defineComponent({
 </script>
   
 <style scoped lang="scss">
+@import '@src/styles/variables';
 .time-picker-bar {
-  margin: 20px;
-  border: 1px solid green;
-
+  margin: $margin-normal;
   .time-picker-actions {
-    border: 10px solid pink;
-    border-radius: 1.5rem;
+    border: $border-size solid pink;
+    border-radius: $border-radius;
+    background-color: #fff;
   }
 
   .btn-max-width {

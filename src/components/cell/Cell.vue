@@ -24,10 +24,10 @@ export default defineComponent({
 <style scoped lang="scss">
     .cell {
         min-width: 4rem;
-        background-color: transparent;
         color: black;
         font-size: 1vw;
         text-align: center;
+        background-color: #fff;
     }
 
     .size {

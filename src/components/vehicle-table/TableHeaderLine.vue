@@ -1,16 +1,16 @@
 <template>
-    <div class="container table-header-line">
+    <div class="table-header-line">
         <HeaderCell
             :label="label"
             :cell-height="cellHeight"
             first-cell
-            class="cell-border-top"
+            class="cell-border-top first-header-cell"
         />
         <template v-for="n in cellAmount">
             <HeaderCell
                 :label="n.toString()"
                 :cell-height="cellHeight"
-                class="cell-border-top"
+                :class="['cell-border-top', n === cellAmount ? 'last-header-cell': '']"
             />
         </template>
     </div>
@@ -40,6 +40,7 @@ export default defineComponent({
 </script>
     
 <style scoped lang="scss">
+@import '@src/styles/variables';
 .table-header-line {
     display: flex;
     color: black;
@@ -47,6 +48,13 @@ export default defineComponent({
 
     .cell-border-top {
         border-top: 1px solid black;
+    }
+
+    .first-header-cell {
+        border-top-left-radius: $border-radius;
+    }
+    .last-header-cell {
+        border-top-right-radius: $border-radius;
     }
 }
 </style>
