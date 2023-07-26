@@ -1,15 +1,15 @@
 <template>
   <div class="page">
-    <Home />
+    <HomeView />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import Home from '@src/pages/Home.vue';
+import HomeView from '@src/views/HomeView.vue';
 
 export default defineComponent({
-  components: { Home }
+  components: { HomeView }
 })
 </script>
 

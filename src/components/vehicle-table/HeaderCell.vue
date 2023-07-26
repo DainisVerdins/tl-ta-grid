@@ -1,5 +1,5 @@
 <template>
-    <Cell
+    <TheCell
         :label="cellLabel"
         :class="['header-table-cell', lastCell ? 'last-table-cell' : '', firstCell ? 'first-header-table-cell' : '']"
     />
@@ -8,10 +8,10 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
   
-import Cell from '@src/components/cell/Cell.vue';
+import TheCell from '@src/components/cell/TheCell.vue';
 
 export default defineComponent({
-    components: { Cell },
+    components: { TheCell },
 
     props: {
         label: {

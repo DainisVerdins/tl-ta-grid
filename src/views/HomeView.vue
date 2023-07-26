@@ -1,16 +1,16 @@
 <template>
-    <TimePickerBar @date="changeFilterDate" />
+    <TheTimePickerBar  />
     <VehicleTable :filter-date="filteringDate" />
 </template>
   
 <script lang="ts">
 import { defineComponent } from 'vue';
-import TimePickerBar from '@src/components/timepicker-bar/TimePickerBar.vue';
+import TheTimePickerBar from '@src/components/timepicker-bar/TheTimePickerBar.vue';
 import VehicleTable from '@src/components/vehicle-table/VehicleTable.vue';
 
 
 export default defineComponent({
-  components: { TimePickerBar, VehicleTable },
+  components: { TheTimePickerBar, VehicleTable },
   
   data() {
     return {

@@ -1,5 +1,5 @@
 <template>
-    <Cell
+    <TheCell
         @click="clickedVehicle"
         :label="cellLabel"
         :class="['table-cell', clickableStyle, lastCellStyle]"
@@ -10,17 +10,17 @@
                 v-b-tooltip.hover.top title="Nevar izņemt TL, jo nav pabeigta teh apskate"
             ></i>
         </template>
-    </Cell>
+    </TheCell>
 </template>
     
 <script lang="ts">
 import { AssignedVehicle } from '@src/interfaces/assigned-vehicle';
 import { PropType, defineComponent } from 'vue'
   
-import Cell from '@src/components/cell/Cell.vue';
+import TheCell from '@src/components/cell/TheCell.vue';
 
 export default defineComponent({
-    components: { Cell },
+    components: { TheCell },
 
     emits: ['clickedVehicle'],
     props: {
