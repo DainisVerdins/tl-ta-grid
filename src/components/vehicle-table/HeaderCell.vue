@@ -6,6 +6,8 @@
 </template>
 
 <script setup lang="ts">
+import TheCell from '@src/components/cell/TheCell.vue';
+
 const props = defineProps({
     label: { type: String, required: true },
     lastCell: { type: Boolean, default: false },

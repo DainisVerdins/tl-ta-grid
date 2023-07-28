@@ -5,21 +5,19 @@
             first-cell
             :class="[lastLine ? 'first-element' : '']"
         />
-        <template v-for="(vehicle, index) in lineVehicles">
+        <template v-for="(vehicle, index) in lineVehicles" :key="vehicle.id">
             <TableCell
                 :ref="`cell${vehicle.id}`"
                 :label="vehicle.vehicleNumber"
                 :vehicle="vehicle"
                 @clicked-vehicle="showModel"
-                :last-cell="isLastFilledCell(index + 1)"
-                :can-be-delete="canDeleteVehicle(vehicle)"
+                :can-be-deleted="canDeleteVehicle(vehicle)"
                 :class="[lastLine && isLastFilledCell(index + 1) ? 'last-element' : '']"
             />
             
         </template>
         <template v-for="_n in emptyCellsAmount">
             <TableCell
-                :last-cell="isLastEmptyCell(_n)"
                 empty-cell
                 :class="[lastLine && isLastEmptyCell(_n) ? 'last-element' : '']"
             />

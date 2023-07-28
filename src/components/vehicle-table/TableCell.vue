@@ -1,85 +1,47 @@
 <template>
-    <TheCell
-        @click="clickedVehicle"
-        :label="cellLabel"
-        :class="['table-cell', clickableStyle, lastCellStyle]"
-    >
-        <template #body v-if="canBeDelete">
-            <i
-                class="bi bi-exclamation-circle"
-                v-b-tooltip.hover.top title="Nevar izņemt TL, jo nav pabeigta teh apskate"
-            ></i>
+    <TheCell @click="clickedVehicle" :label="cellLabel" :class="['table-cell', clickableStyle]">
+        <template #body v-if="props.canBeDeleted">
+            <i class="bi bi-exclamation-circle" v-b-tooltip.hover.top
+                title="Nevar izņemt TL, jo nav pabeigta teh apskate"></i>
         </template>
     </TheCell>
 </template>
     
-<script lang="ts">
+<script setup lang="ts">
 import { AssignedVehicle } from '@src/interfaces/assigned-vehicle';
-import { PropType, defineComponent } from 'vue'
-  
+import { PropType, Ref, computed, ref } from 'vue'
+
 import TheCell from '@src/components/cell/TheCell.vue';
 
-export default defineComponent({
-    components: { TheCell },
+const props = defineProps({
+    vehicle: { type: Object as PropType<AssignedVehicle>, required: false },
+    label: { type: String, default: '', required: false },
+    emptyCell: { type: Boolean, default: false },
+    canBeDeleted: { type: Boolean, default: false },
+});
 
-    emits: ['clickedVehicle'],
-    props: {
-        vehicle: {
-            required: false,
-            type: Object as PropType<AssignedVehicle>,
-        },
-        label: {
-            required: false,
-            default: '',
-            type: String,
-        },
-        lastCell: {
-            default: false,
-            type: Boolean
-        },
-        emptyCell: {
-            default: false,
-            type: Boolean
-        },
-        canBeDelete: {
-            default: false,
-            type: Boolean
-        }
-    },
+const emit = defineEmits<{
+    'clickedVehicle': [vehicle: AssignedVehicle]
+}>();
 
-    data() {
-        return {
-            isEmpty: false,
-            cellLabel:'',
-        }
-    },
+const isEmpty: Ref<boolean> = ref(false);
+const cellLabel: Ref<string> = ref(props.label);
 
-    mounted(){
-        this.cellLabel = this.label;
-    },
+const clickableStyle = computed((): string => {
+    const isClickable = !isEmpty.value && (!props.emptyCell) && !props.canBeDeleted;
 
-    computed: {
-        clickableStyle(): string {
-            const isClickable = !this.isEmpty && (!this.emptyCell) && !this.canBeDelete;
+    return isClickable ? 'clickable' : '';
+});
 
-            return isClickable ? 'clickable' : '';
-        },
-        lastCellStyle(): string {
-            return this.lastCell ? 'is-last-table-cell' : '';
-        }
-    },
-    methods: {
-        clickedVehicle(): void {
-            if (!this.isEmpty && !this.canBeDelete)
-                this.$emit('clickedVehicle', this.vehicle);
-        },
-        setCellToBeEmpty(): void {
-            this.isEmpty = true;
-            this.cellLabel = '';
-
-        }
-    },
-})
+const clickedVehicle = (): void => {
+    if (!isEmpty.value && !props.canBeDeleted && props.vehicle)
+        emit('clickedVehicle', props.vehicle);
+};
+//@ts-ignore
+const setCellToBeEmpty = (): void => {
+    isEmpty.value = true;
+    cellLabel.value = '';
+}
 </script>
     
 <style scoped lang="scss">
@@ -90,15 +52,11 @@ export default defineComponent({
     border-top: none;
 }
 
-.is-last-table-cell {
-    border-right: 1px solid black;
-}
-
 .clickable {
     &:hover {
         background-color: yellow;
         cursor: pointer;
     }
 }
-  </style>
+</style>
     
