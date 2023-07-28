@@ -1,48 +1,21 @@
 <template>
-    <TheCell
-        :label="cellLabel"
-        :class="['header-table-cell', lastCell ? 'last-table-cell' : '', firstCell ? 'first-header-table-cell' : '']"
+    <TheCell 
+        :label="props.label"
+        :class="['header-table-cell', props.lastCell ? 'last-table-cell' : '', props.firstCell ? 'first-header-table-cell' : '']" 
     />
 </template>
-    
-<script lang="ts">
-import { defineComponent } from 'vue'
-  
-import TheCell from '@src/components/cell/TheCell.vue';
 
-export default defineComponent({
-    components: { TheCell },
+<script setup lang="ts">
+const props = defineProps({
+    label: { type: String, required: true },
+    lastCell: { type: Boolean, default: false },
+    readOnly: { type: Boolean, default: false },
+    firstCell: { type: Boolean, default: false },
+    emptyCell: { type: Boolean, default: false },
+});
 
-    props: {
-        label: {
-            required: true,
-            type: String,
-        },
-        lastCell: {
-            default: false,
-            type: Boolean
-        },
-        firstCell: {
-            default: false,
-            type: Boolean
-        },
-        emptyCell: {
-            default: false,
-            type: Boolean
-        }
-    },
-    data() {
-        return {
-            isEmpty: false,
-            cellLabel:'',
-        }
-    },
-    mounted(){
-        this.cellLabel = this.label;
-    },
-})
+
 </script>
-    
 <style scoped lang="scss">
 .header-table-cell {
     border-right: 1px solid black;
@@ -59,4 +32,3 @@ export default defineComponent({
     border-left: 1px solid black;
 }
 </style>
-    
