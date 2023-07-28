@@ -38,16 +38,16 @@ import { constants } from '@src/constants/constants';
 import VueDatePicker from '@vuepic/vue-datepicker';
 
 const emit = defineEmits<{
-    selectedDate: [selectedDate: String]
+    selectedDate: [date: string]
 }>();
 
 // TODO: if date provided it auto sets to current date, maybe better to user
 // chose preferred date not force him to start for current date?
 // same problem with time
-let date = ref(new Date());
-let time: Ref<Time> = ref({ hours: 0, minutes: 0, seconds: 0 });
-let isValidDate: Ref<undefined | boolean> = ref(undefined);
-let isValidTime: Ref<undefined | boolean> = ref(undefined);
+const date = ref(new Date());
+const time: Ref<Time> = ref({ hours: 0, minutes: 0, seconds: 0 });
+    const isValidDate: Ref<undefined | boolean> = ref(undefined);
+const isValidTime: Ref<undefined | boolean> = ref(undefined);
 
 const cancelText = ((): string => {
     return 'Atcelt';
@@ -83,7 +83,6 @@ const emitSelectedDate = ((): void => {
       isValidDate.value = undefined;
       
       date.value.setHours(time.value.hours, time.value.minutes, time.value.seconds);
-      // FIXME: I am not properly emiting values;
       emit('selectedDate',  date.value.toString());
 });
 </script>
