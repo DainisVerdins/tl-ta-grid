@@ -1,5 +1,5 @@
 <template>
-    <TheCell @click="clickedVehicle" :label="cellLabel" :class="['table-cell', clickableStyle]">
+    <TheCell @click="clickedVehicle" :label="cellLabel" :class="['table-cell', clickableStyle]" ref="tableCell">
         <template #body v-if="props.canBeDeleted">
             <i class="bi bi-exclamation-circle" v-b-tooltip.hover.top
                 title="Nevar izņemt TL, jo nav pabeigta teh apskate"></i>
@@ -10,7 +10,6 @@
 <script setup lang="ts">
 import { AssignedVehicle } from '@src/interfaces/assigned-vehicle';
 import { PropType, Ref, computed, ref } from 'vue'
-
 import TheCell from '@src/components/cell/TheCell.vue';
 
 const props = defineProps({
@@ -26,6 +25,7 @@ const emit = defineEmits<{
 
 const isEmpty: Ref<boolean> = ref(false);
 const cellLabel: Ref<string> = ref(props.label);
+const tableCell = ref(null);
 
 const clickableStyle = computed((): string => {
     const isClickable = !isEmpty.value && (!props.emptyCell) && !props.canBeDeleted;
@@ -41,7 +41,12 @@ const clickedVehicle = (): void => {
 const setCellToBeEmpty = (): void => {
     isEmpty.value = true;
     cellLabel.value = '';
-}
+};
+
+defineExpose({
+    setCellToBeEmpty,
+    tableCell
+});
 </script>
     
 <style scoped lang="scss">
