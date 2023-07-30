@@ -46,7 +46,7 @@ const emit = defineEmits<{
 // same problem with time
 const date = ref(new Date());
 const time: Ref<Time> = ref({ hours: 0, minutes: 0, seconds: 0 });
-    const isValidDate: Ref<undefined | boolean> = ref(undefined);
+const isValidDate: Ref<undefined | boolean> = ref(undefined);
 const isValidTime: Ref<undefined | boolean> = ref(undefined);
 
 const cancelText = ((): string => {
