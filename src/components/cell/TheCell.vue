@@ -1,26 +1,17 @@
 <template>
-    <div :class="['cell container',`size-${cellHeight}`]" >
-        {{ label }}
+    <div :class="['cell container', `size-${props.cellHeight}`]">
+        {{ props.label }}
         <slot name="body" />
     </div>
 </template>
-    
-<script lang="ts">
-import { defineComponent } from 'vue';
-export default defineComponent({
-    props: {
-        label:{
-            required: false,
-            type: String,
-        },
-        cellHeight: {
-            default: 'md',
-            type: String as () => 'md'  | 'lg'
-        }
-    },
-})
+  
+<script setup lang="ts">
+const props = defineProps({
+    label: { type: String, required: false },
+    cellHeight: { type: String as () => 'md'  | 'lg', default: 'md' },
+});
 </script>
-    
+
 <style scoped lang="scss">
     .cell {
         min-width: 4rem;
@@ -41,4 +32,3 @@ export default defineComponent({
         }
     }
 </style>
-    

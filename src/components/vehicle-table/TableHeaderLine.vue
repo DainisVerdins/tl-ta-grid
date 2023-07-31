@@ -2,41 +2,28 @@
     <div class="table-header-line">
         <HeaderCell
             :label="label"
-            :cell-height="cellHeight"
+            :cell-height="props.cellHeight"
             first-cell
             class="cell-border-top first-header-cell"
         />
-        <template v-for="n in cellAmount">
+        <template v-for="n in props.cellAmount">
             <HeaderCell
                 :label="n.toString()"
-                :cell-height="cellHeight"
-                :class="['cell-border-top', n === cellAmount ? 'last-header-cell': '']"
+                :cell-height="props.cellHeight"
+                :class="['cell-border-top', n === props.cellAmount ? 'last-header-cell': '']"
             />
         </template>
     </div>
 </template>
     
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
 import HeaderCell from '@src/components/vehicle-table/HeaderCell.vue';
-  
-export default defineComponent({
-    components: { HeaderCell },
-    props: {
-        label:{
-            required: true,
-            type: String,
-        },
-        cellHeight: {
-            default: 'md',
-            type: String as () => 'md'  | 'lg'
-        },
-        cellAmount: {
-            default: 14,
-            type: Number
-        }
-    },
-})
+
+const props = defineProps({
+    label: { type: String, required: true },
+    cellHeight: { type: String as () => 'md'  | 'lg', default: 'md', },
+    cellAmount: { type: Number, default: 14 },
+});
 </script>
     
 <style scoped lang="scss">
