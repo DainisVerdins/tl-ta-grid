@@ -70,18 +70,17 @@ const dateFormat = ((): string => {
 });
 
 const emitSelectedDate = ((): void => {
-    if(!date.value) {
-        isValidDate.value = false;
-        return;
-      }
-      if(!time.value) {
+    console.log('HERE ME AOUT i AM TRIGGERED BY UNIT TEST');  
+    console.log('date.value',date.value);
+    console.log('time.value',time.value);
+    if(!time.value.hours) {
         isValidTime.value = false;
         return;
       }
 
       isValidTime.value = undefined;
       isValidDate.value = undefined;
-      
+
       date.value.setHours(time.value.hours, time.value.minutes, time.value.seconds);
       emit('selectedDate',  date.value.toString());
 });
