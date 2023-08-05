@@ -26,7 +26,7 @@
   
 <script setup lang="ts">
 
-import { useDate } from '@src/composables/useDate.ts'
+import { useDate }from '@src/composables/useDate.ts'
 
 import { constants } from '@src/constants/constants';
 
@@ -61,6 +61,7 @@ const dateFormat = ((): string => {
 });
 
 const emitSelectedDate = ((): void => {
+    console.log('component isDateSet()',isDateSet());
     if(isDateSet())
       emit('selectedDate',  date.value.toString());
 });

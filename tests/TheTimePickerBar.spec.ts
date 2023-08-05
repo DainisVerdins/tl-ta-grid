@@ -6,16 +6,22 @@ import { assert, describe, it, vi, expect } from 'vitest';
 
 const wrapper = shallowMount(TheTimePickerBar);
 
-describe("The Time Picker Bar", () => {
+describe.only("The Time Picker Bar", () => {
     it("is a vue instance", () => {
-        const wrapper = shallowMount(TheTimePickerBar);
+       // const wrapper = shallowMount(TheTimePickerBar);
         expect(wrapper.exists()).toBeTruthy();
       });
-    it("does not launch emit if time is 00::00::00 on click", () => {
-        const wrapper = shallowMount(TheTimePickerBar);
+    it("does not emit time if emitSelectedDate() was launch", () => {
+        //const wrapper = shallowMount(TheTimePickerBar);
+        //console.log(wrapper.vm.isDateSet())
+        wrapper.vm.emitSelectedDate();
         expect(wrapper.emitted('selected-date')).toBeFalsy();
     });
-    it("does  emit if time is not 00::00::00 on click", () => {
-        const wrapper = shallowMount(TheTimePickerBar);
+    // FIXME: unit test is not working
+    it.only("does  emit if isDateSet() returns true", () => {    
+      wrapper.vm.useDate = vi.fn().mockReturnValue(true);
+        wrapper.vm.emitSelectedDate();
+
+        expect(wrapper.emitted('selected-date')).toBe(true);
     });
   });

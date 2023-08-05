@@ -1,5 +1,5 @@
-import { mount, shallowMount } from "@vue/test-utils";
-import { assert, describe, it, vi, expect } from "vitest";
+
+import { describe, it, expect } from "vitest";
 import { useDate } from "../../src/composables/useDate";
 
 const { date, time, isValidDate, isValidTime, isDateSet } = useDate();
