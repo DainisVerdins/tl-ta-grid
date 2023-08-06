@@ -61,9 +61,8 @@ const dateFormat = ((): string => {
 });
 
 const emitSelectedDate = ((): void => {
-    console.log('component isDateSet()',isDateSet());
     if(isDateSet())
-      emit('selectedDate',  date.value.toString());
+        emit('selectedDate',  date.value.toString());
 });
 </script>
 
