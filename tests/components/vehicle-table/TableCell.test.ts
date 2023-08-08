@@ -11,9 +11,6 @@ const wrapper = shallowMount(TableCell, {
     props: {
         label: 'something'
     },
-    slots: {
-      body: 'applied slot',
-    }
   });
 
 describe('TableCell.vue component', () => {
