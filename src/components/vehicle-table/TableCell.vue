@@ -34,8 +34,10 @@ const clickableStyle = computed((): string => {
 });
 
 const clickedVehicle = (): void => {
-    if (!isEmpty.value && !props.canBeDeleted && props.vehicle)
-        emit('clickedVehicle', props.vehicle);
+    const isActiveVehicle: boolean = !props.canBeDeleted && Boolean(props.vehicle);
+
+    if (!isEmpty.value && isActiveVehicle)
+        emit('clickedVehicle', props.vehicle as AssignedVehicle);
 };
 //@ts-ignore
 const setCellToBeEmpty = (): void => {
