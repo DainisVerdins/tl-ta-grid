@@ -63,7 +63,7 @@ const wrapper = shallowMount(VehicleTable, {
   },
 });
 
-describe.only('VehicleTable.vue component', () => {
+describe('VehicleTable.vue component', () => {
   it('is a vue instance', () => {
     expect(wrapper.exists()).toBeTruthy();
   });
