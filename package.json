@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest  --dom",
+    "coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.4.0",
@@ -15,14 +17,18 @@
     "bootstrap": "^5.3.0",
     "bootstrap-icons": "^1.10.5",
     "bootstrap-vue-next": "^0.9.4",
+    "happy-dom": "^10.5.2",
     "vue": "^3.2.47",
     "vue-toast-notification": "^3.1.1"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.3",
     "@vitejs/plugin-vue": "^4.1.0",
+    "@vue/test-utils": "^2.4.1",
     "sass": "^1.63.2",
     "typescript": "^5.0.2",
     "vite": "^4.3.9",
+    "vitest": "^0.34.0",
     "vue-tsc": "^1.4.2"
   }
 }

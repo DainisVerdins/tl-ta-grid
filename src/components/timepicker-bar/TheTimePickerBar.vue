@@ -26,12 +26,7 @@
   
 <script setup lang="ts">
 
-interface Time {
-    hours: number;
-    minutes: number;
-    seconds: number;
-}
-import { Ref, ref } from 'vue';
+import { useDate }from '@src/composables/useDate.ts'
 
 import { constants } from '@src/constants/constants';
 
@@ -44,11 +39,7 @@ const emit = defineEmits<{
 // TODO: if date provided it auto sets to current date, maybe better to user
 // chose preferred date not force him to start for current date?
 // same problem with time
-const date = ref(new Date());
-const time: Ref<Time> = ref({ hours: 0, minutes: 0, seconds: 0 });
-const isValidDate: Ref<undefined | boolean> = ref(undefined);
-const isValidTime: Ref<undefined | boolean> = ref(undefined);
-
+const { date, time, isValidDate, isValidTime, isDateSet } = useDate();
 const cancelText = ((): string => {
     return 'Atcelt';
 });
@@ -70,20 +61,8 @@ const dateFormat = ((): string => {
 });
 
 const emitSelectedDate = ((): void => {
-    if(!date.value) {
-        isValidDate.value = false;
-        return;
-      }
-      if(!time.value) {
-        isValidTime.value = false;
-        return;
-      }
-
-      isValidTime.value = undefined;
-      isValidDate.value = undefined;
-      
-      date.value.setHours(time.value.hours, time.value.minutes, time.value.seconds);
-      emit('selectedDate',  date.value.toString());
+    if(isDateSet())
+        emit('selectedDate',  date.value.toString());
 });
 </script>
 

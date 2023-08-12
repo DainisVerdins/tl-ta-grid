@@ -59,7 +59,7 @@ const filteredVehicleLines = computed((): VehicleLine[] => {
     return output;
 });
 
-const vehicleLines: Ref<VehicleLine[]> = ref([]);
+const vehicleLines: Ref<VehicleLine[]> = ref([]); // FIXME: Probably do not to be reactive!
 const isLoaded: Ref<boolean> = ref(false);
 const $toast = useToast();
 

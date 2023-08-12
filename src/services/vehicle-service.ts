@@ -38,6 +38,7 @@ const vehicleService = {
     },
 
     removeVehicleById: async(id: number): Promise<void> => {
+        // just to simulate request to BE to remove vehicle
         const promise = new Promise((resolve) => {
             setTimeout(() => resolve(id), 1000)
         });
